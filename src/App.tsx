@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import "./App.css";
 
-import ChatFirst from "./component/ChatFirst";
-import ChatSecond from "./component/ChatSecond";
 import { observer } from "mobx-react";
 import { observable, action } from "mobx";
 
+import BuildChatComponent from "./component/ChatBuilder";
+
 interface IProps {}
+
+const ChatFirst = BuildChatComponent(1);
+const ChatSecond = BuildChatComponent(2);
 
 @observer
 class App extends Component<IProps> {
@@ -16,6 +19,10 @@ class App extends Component<IProps> {
     constructor(props: IProps) {
         super(props);
         this.initChannel();
+    }
+
+    public componentWillUnmount() {
+        this.channel!.close();
     }
 
     @action
